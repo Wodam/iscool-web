@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Projeto IsCool!
 
 ***
@@ -8,3 +9,6 @@
 ***
 <p align="center">
 Bem vindos ao projeto IsCool!
+=======
+# iscool-web
+>>>>>>> master
