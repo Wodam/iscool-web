@@ -3,7 +3,7 @@
 </p>
 
 ## :ledger: Notes before installing
-- This is just an Web GUI, you can get the API complement on [this repository](https://github.com/Wodam/iscool-api).
+- **This is just an Web GUI**, you can get the API complement on [this repository](https://github.com/Wodam/iscool-api).
 - By default, this project use [YARN](https://yarnpkg.com) as depedency/package management.
 ## :fire: Installation
 1. Install dependencies: `yarn`
