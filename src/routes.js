@@ -1,15 +1,14 @@
 // IMPORTS
-import Home from './components/Home.vue'
-import Questoes from './components/Questoes.vue'
+import Questions from './components/Questions.vue'
 
 // ROUTES
 export const routes = [
 	{
 	  path: '/',
-	  component: Home
+	  component: Questions
   },
   {
-	  path: '/questoes',
-	  component: Questoes
+	  path: '/questions',
+	  component: Questions
 	}
 ];

@@ -110,7 +110,7 @@ import Menu from './Menu.vue'
 import axios from 'axios'
 
 export default {
-  name: "Questoes",
+  name: "Questions",
   components: { Menu },
   data() {
     return {
