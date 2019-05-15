@@ -5,8 +5,8 @@
 		    <vs-card>
 					<vs-row vs-justify="center">
 						<vs-col type="flex" vs-justify="center" vs-align="center" vs-w="12">
-							<vs-button class="px-5 create" color="success" icon="add" @click="func='';popupActivo=true">
-								<h3>Nova Questão</h3>
+							<vs-button class="px-5 create" color="success" icon="add" @click="popupActivo=true">
+								<h3>Nova Avaliação</h3>
 							</vs-button>
 						</vs-col>
 					</vs-row>
@@ -39,34 +39,27 @@
 				<vs-divider />
 			</vs-col>
 		</vs-row>
-		{{questions[0].question.id}}
-		{{questions[1].question.id}}
-		{{questions[2].question.id}}
-		{{questions[3].question.id}}
-		<!-- {{questions}} -->
-		<vs-row vs-justify="center" v-for="(question, index) in questions" :key="`question-${question.question.id_question}`" class="question-card">
+		{{questions[0].id}}
+		<vs-row vs-justify="center" v-for="(question, index) in getListedQuestions()" :key="question.id_question" class="question-card">
 			<vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6">
 		    <vs-card>
 		      <div slot="header">
 		        <h2 icon="search">
-		          {{ question.question.text_question }}
+		          {{ question.text_question }}
 		        </h2>
 		      </div>
-					{{ question.question.description_question }}
-					<div v-for="(choice,index) in question.choices" :key="`choice-${choice.id_choice}`">
-						<div><span :class="choice.trueness_choice === 'v' ? 'question-answer' : ''">{{letras[index]}}</span> {{ choice.description_choice }}</div>
-					</div>
+					{{ question.description_question }}
 		      <div slot="footer">
 		        <vs-row vs-justify="space-between">
 		          <vs-button color="dark" icon="delete" @click="handleDelete(question.id_question)"></vs-button>
-							<vs-button color="warning" icon="edit" @click="func='edit';popupActivo=true"></vs-button>
+							<vs-button color="warning" icon="edit"></vs-button>
 		        </vs-row>
 		      </div>
 		    </vs-card>
 		  </vs-col>
 		</vs-row>
 
-		<createQuestion :popupActivo='popupActivo' :func="func"></createQuestion>
+		<createQuestion :popupActivo='popupActivo'></createQuestion>
 	</div>
 </template>
 <script>
@@ -74,14 +67,13 @@ import axios from 'axios';
 import createQuestion from './Questions/create.vue';
 
 export default {
-  name: "Questions",
+  name: "Exams",
   components: { createQuestion },
   data() {
     return {
 			searchText: "",
 			popupActivo: false,
-			questions: [],
-			letras: ['a)','b)','c)','d)','e)']
+			questions: []
 		}
   },
 	created: function() {
@@ -93,28 +85,9 @@ export default {
 			return this.questions;
 		},
     reload() {
-			this.questions = [];
       axios.get('/api/question').then((response) => {
-				let questions = response.data;
-
-				for (let question of questions) {
-					axios.get('/api/choice/q/'+question.id_question).then((response) => {
-						this.questions.push({
-							question: question,
-							choices: response.data
-						})
-					}).then(_ => {
-						console.log(this.questions);
-						setTimeout(_ => {
-							this.$forceUpdate()
-							this.fetchData()
-						}, 100);
-					})
-					.catch((error) => {
-						console.log(error)
-					})
-				}
-
+				this.questions = response.data;
+				console.log(this.questions)
       }).catch((error) => {
         console.log(error)
       })
@@ -135,8 +108,5 @@ export default {
 }
 .create {
 	width: 100% !important
-}
-.question-answer {
-  font-weight: bold;
 }
 </style>

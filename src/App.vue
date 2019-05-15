@@ -1,16 +1,17 @@
 <template>
-  <div id="app" class="">
-    <router-view></router-view>
+  <div id="app" class="d-flex">
+		<SideBar></SideBar>
+    <router-view class="container"></router-view>
   </div>
 </template>
 
 <script>
 import { routes } from './routes';
-import Menu from './components/Menu.vue';
+import SideBar from './components/SideBar.vue';
 
 export default {
   name: "App",
-  components: { Menu },
+  components: { SideBar },
   data(){
     return {
       routes
@@ -20,7 +21,14 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700');
+
 #app {
   background-color: whitesmoke;
+	font-family: 'Roboto Slab', serif;
+}
+
+.container {
+	margin-left: 250px !important;
 }
 </style>
