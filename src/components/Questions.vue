@@ -2,7 +2,7 @@
 	<div class="questions">
 		<header class="page-header px-5 d-flex justify-content-end align-items-center">
 			<h1 class="page-title text-center">Questões</h1>
-			<button class="__action __action-outline add btn" type="button">
+			<button class="__action __action-outline add btn" type="button" v-if="!showBaloon" @click="showBaloon = true">
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 					<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
 					<path d="M0 0h24v24H0z" fill="none"/>
@@ -11,7 +11,7 @@
 			</button>
 		</header>
 		<article class="container">
-			<createQuestion class="mb-3" @question-saved='refresh'></createQuestion>
+			<createQuestion v-show="showBaloon" class="mb-3" @cancel="showBaloon = false"  @question-saved='refresh'></createQuestion>
 			<form class="__card p-3">
 			  <div class="form-row">
 			    <div class="col-10">
@@ -32,7 +32,7 @@
 				<div class="question __card mt-3" v-for="(question, index) in questions" :key="question.id_question">
 					<div class="question-header d-flex justify-content-between align-items-center">
 						<div class="d-flex">
-							<div class="action link __rounded-tl">
+							<div class="action link __rounded-tl" v-b-modal.linkModal @click="getLinks(question.id_question)">
 								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 									<path d="M0 0h24v24H0z" fill="none"/>
 									<path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
@@ -75,6 +75,11 @@
 					</div>
 				</div>
 			</div>
+
+			<b-modal id="linkModal" size="lg" centered title="Avaliações Associadas"  @ok="setLinks(questionSelected, examsSelected)">
+			  <multiselect v-model="examsSelected" multiple :options="exams" :custom-label="examLabel" placeholder="Escolha alguma prova" label="name_test" track-by="name_test"></multiselect>
+			  <!-- <pre class="language-json"><code>{{ examsSelected  }}</code></pre> -->
+			</b-modal>
 		</article>
 	</div>
 </template>
@@ -88,12 +93,24 @@ export default {
   data() {
     return {
 			questions: [],
-			letters: ['A', 'B', 'C', 'D', 'E']
+			exams: [],
+			letters: ['A', 'B', 'C', 'D', 'E'],
+			examsSelected: [],
+			questionSelected: null,
+			showBaloon: false
 		}
   },
 	created: function() {
 		axios.defaults.baseURL = 'http://localhost:3000';
 		this.refresh();
+
+		// Exams
+		axios.get('/api/test').then(async response => {
+			this.exams = response.data.sort((a,b) => (a.id_test < b.id_test) ? 1 : ((b.id_test < a.id_test) ? -1 : 0));
+			console.log("Exams: ", this.exams)
+		}).catch((error) => {
+			console.log(error)
+		})
 	},
 	methods: {
 		async refresh () {
@@ -127,7 +144,49 @@ export default {
 		},
 		copyToForm (index) {
 			console.log(this.questions[index]);
-			
+		},
+		examLabel ({ id_test, name_test }) {
+      return `[AV-${id_test}] ${name_test}`
+    },
+		async getLinks (id_question) {
+			this.questionSelected = id_question;
+
+			this.examsSelected = await axios.get('/api/answer', {params: {where: {id_question: id_question}}}).then(response => {
+				response.data = response.data.sort((a,b) => (a.id_test < b.id_test) ? 1 : ((b.id_test < a.id_test) ? -1 : 0));
+
+				let exams_id = [];
+
+				// Push if not exists
+				for (let answer of response.data) {
+					var index = exams_id.findIndex(id => id == answer.id_test)
+				  if (index === -1)
+				    exams_id.push(answer.id_test);
+				}
+
+				let examsFiltered = [];
+				for (let id of exams_id) {
+					examsFiltered.push(this.exams.find(exam => {
+						return exam.id_test === id
+					}))
+				}
+
+				return examsFiltered;
+			}).catch((error) => {
+				console.log(error)
+			})
+
+			// console.log("Answers: ", response.data)
+			console.log('Selected Question: ', this.questionSelected);
+			console.log("Exams Selected: ", this.examsSelected)
+		},
+		async setLinks (question, exams) {
+			for (let exam of exams) {
+				await axios.post('/api/answer', {id_test: exam.id_test, id_question: question}).then(response => {
+					console.log("Linked: ", response)
+				}).catch((error) => {
+					console.log(error)
+				})
+			}
 		}
 	}
 }

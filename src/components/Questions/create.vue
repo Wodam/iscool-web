@@ -31,7 +31,7 @@
 				<div class="col-sm-12 col-md-7 d-flex justify-content-center align-items-center">
 					<div class="bad row">
 						<div class="col-sm-12 col-md-2 pr-0">
-							<p class="action text-center mb-0 py-2 __rounded">
+							<p class="action text-center mb-0 py-2 __rounded" @click="cancel">
 								Cancelar
 							</p>
 						</div>
@@ -125,7 +125,10 @@ export default {
       axios.delete('/api/question/'+questionToDelete.id_questao).then(_ => {
 				this.reload()
 			})
-    }
+    },
+		cancel () {
+			this.$emit('cancel')
+		}
 	},
 	mounted() {
 		// Remove "btn-group" and "btn-group-toggle" classes that "b-form-radio-group" component adds when has the prop "button"
