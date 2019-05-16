@@ -2,7 +2,7 @@
 	<div class="exams">
 		<header class="page-header px-5 d-flex justify-content-end align-items-center">
 			<h1 class="page-title text-center">Avaliações</h1>
-			<button class="__action __action-outline add btn" type="button">
+			<button class="__action __action-outline add btn" type="button" v-if="!showBaloon" @click="showBaloon = true">
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 					<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
 					<path d="M0 0h24v24H0z" fill="none"/>
@@ -11,7 +11,7 @@
 			</button>
 		</header>
 		<article class="container">
-			<createExam class="mb-3" @saved='refresh'></createExam>
+			<createExam class="mb-3" v-if="showBaloon"  @cancel="showBaloon = false" @saved='refresh'></createExam>
 			<form class="__card p-3">
 			  <div class="form-row">
 			    <div class="col-10">
@@ -32,13 +32,13 @@
 				<div class="exam __card mt-3" v-for="(exam, index) in exams" :key="exam.id_test">
 					<div class="exam-header d-flex justify-content-between align-items-center">
 						<div class="d-flex">
-							<!-- <div class="action link __rounded-tl">
+							<div class="action link __rounded-tl" v-b-modal.linkModal @click="selected = exam.id_test">
 								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 									<path d="M0 0h24v24H0z" fill="none"/>
 									<path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
 								</svg>
-							</div> -->
-							<div class="action copy __rounded-tl">
+							</div>
+							<div class="action copy">
 								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 									<path fill="none" d="M0 0h24v24H0z"/>
 									<path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm-1 4l6 6v10c0 1.1-.9 2-2 2H7.99C6.89 23 6 22.1 6 21l.01-14c0-1.1.89-2 1.99-2h7zm-1 7h5.5L14 6.5V12z"/>
@@ -68,6 +68,16 @@
 					</div>
 				</div>
 			</div>
+
+			 <b-modal id="linkModal" size="lg" scrollable centered title="Questões Associadas">
+				 <!-- <multiselect v-model="linkedSections" placeholder="Fav No Man’s Sky path" label="title" track-by="title" :options="options" :option-height="104" :custom-label="customLabel" :show-labels="false">
+			     <template slot="singleLabel" slot-scope="props"><img class="option__image" :src="props.option.img" alt="No Man’s Sky"><span class="option__desc"><span class="option__title">{{ props.option.title }}</span></span></template>
+			     <template slot="option" slot-scope="props"><img class="option__image" :src="props.option.img" alt="No Man’s Sky">
+			       <div class="option__desc"><span class="option__title">{{ props.option.title }}</span><span class="option__small">{{ props.option.desc }}</span></div>
+			     </template>
+			   </multiselect>
+			   <pre class="language-json"><code>{{ linkedSections  }}</code></pre> -->
+			 </b-modal>
 		</article>
 	</div>
 </template>
@@ -80,7 +90,9 @@ export default {
 	components: { createExam },
   data() {
     return {
-			exams: []
+			exams: [],
+			selected: null,
+			showBaloon: false
 		}
   },
 	created: function() {
