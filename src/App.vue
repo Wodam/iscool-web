@@ -46,6 +46,12 @@ export default {
   border-bottom-right-radius: 5px !important
 }
 
+/* ~ Card ~ */
+.__card {
+	background-color: #fff;
+	border-radius: 5px
+}
+
 /* --- RESETS --- */
 a:not([aria-disabled="true"]) {
 	color: inherit !important;
@@ -58,7 +64,7 @@ a:not([aria-disabled="true"]) {
 }
 
 .main {
-	/* margin-left: 250px !important; */
+	margin-left: 200px !important;
 }
 
 .btn {
@@ -83,26 +89,53 @@ a:not([aria-disabled="true"]) {
 .page-header .add {
 	position: absolute;
 	color: #1EA896;
-	border: 2px solid #1EA896;
-	font-weight: 500;
+	border-color: #1EA896;
 	font-size: 1.1rem;
+}
+
+.page-header .add svg {
+	fill: #1EA896;
+}
+
+.page-header .add:hover {
+	background-color: #1EA896;
+}
+
+
+/* Search button */
+.__action.search {
+	background-color: #1EA0A8;
+	color: white
+}
+.__action.search svg {
+	fill: #fff;
+}
+
+/* __actions buttons */
+.action {
+	cursor: pointer;
+}
+
+.__action {
+	font-weight: 500 !important;
 
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
-
-.page-header .add svg {
-	fill: #1EA896;
+.__action svg {
 	margin-right: 6px
 }
-
-.page-header .add:hover {
-	background-color: #1EA896;
-	color: white;
+.__action:hover {
+	color: white !important;
+}
+.__action:hover svg{
+	fill: white;
 }
 
-.page-header .add:hover svg{
-	fill: white;
+/* __action outline */
+.__action-outline {
+	border-width: 2px !important;
+	border-style: solid;
 }
 </style>
