@@ -8,7 +8,7 @@ import Exams from './components/Exams.vue';
 export const routes = [
 	{
 	  path: '/',
-	  component: Questions
+	  component: Exams
   },
   {
 	  path: '/questions',
