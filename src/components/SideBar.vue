@@ -1,33 +1,45 @@
 <template lang="html">
-	<div class="parent" ref="parent" >
-		<vs-sidebar reduce-not-rebound class="sidebar-content" :reduce="reduce" static-position :parent="parentSidebar" :hidden-background="true" default-index="" color="success" spacer>
-			<!-- <div class="wrapper" @mouseover="reduce=false" @mouseleave="reduce=true"> -->
-				<div class="header-sidebar" slot="header">
-					<vs-avatar size="70px"/>
-					<h4 class="py-1" v-show="!reduce">
-	          {{ 'Bruno Marini' }}
-	          <!-- <vs-button color="primary" icon="more_horiz" type="flat"></vs-button> -->
-	        </h4>
+	<div class="side-bar">
+		<header class="p-3 d-flex justify-content-center align-items-center">
+			<img class="h-100" src="../assets/img/logo.svg" alt="">
+		</header>
+		<div class="wrapper">
+			<nav role="navigation">
+				<ul class="nav flex-column">
+				  <li class="nav-item">
+				    <router-link class="nav-link" to="exams">Avaliações</router-link>
+				  </li>
+				  <li class="nav-item">
+				    <router-link class="nav-link" to="questions">Questões</router-link>
+				  </li>
+				  <li class="nav-item">
+				    <router-link class="nav-link disabled" tabindex="-1" aria-disabled="true" to="answers_sheets">Gabaritos</router-link>
+				  </li>
+				  <li class="nav-item">
+				    <router-link class="nav-link disabled" tabindex="-1" aria-disabled="true" to="notes">Notas</router-link>
+				  </li>
+				</ul>
+			</nav>
+			<footer class="user w-100">
+				<div class="container-fluid h-100 w-100">
+					<div class="row h-100">
+						<div class="col-sm-4 p-0 h-100">
+							<div class="avatar __rounded-tr p-2 h-100 d-flex justify-content-center align-items-center">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+									<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+									<path d="M0 0h24v24H0z" fill="none"/></svg>
+							</div>
+						</div>
+						<div class="col-sm-8 p-0">
+							<div class="name w-100 h-100 d-flex justify-content-center align-items-center">
+								{{ user.name }}
+							</div>
+						</div>
+					</div>
 				</div>
-				<vs-divider icon="attach_file" position="left">
-					Principal
-				</vs-divider>
-
-				<vs-sidebar-item index="1" icon="list_alt" href="questions">
-				 Questões
-				</vs-sidebar-item>
-
-				<vs-sidebar-item index="6" icon="pages" href="exams">
-					Avaliações
-				</vs-sidebar-item>
-
-				<div class="footer-sidebar" slot="footer">
-					<!-- <vs-button icon="settings" color="primary" type="border"></vs-button> -->
-					<vs-button icon="menu" @click="reduce=!reduce" title="Toggle menu" color="dark" :type="reduce ? 'border' : 'filled'"></vs-button>
-				</div>
-			<!-- </div> -->
-		</vs-sidebar>
-  </div>
+			</footer>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -35,65 +47,64 @@ export default {
 	name: "SideBar",
   data(){
     return {
-			active:true,
-	    reduce: false,
-			parentSidebar: this.$refs.parent
+			user: {
+				name: 'Bruno Marini'
+			}
     }
-  },
-	mounted () {
-	}
+  }
 }
 </script>
 
-<style lang="css">
-.parent {
-  overflow: hidden;
-	width: 100%;
-	max-width: 250px;
-  height: 100vh;
-  position: fixed;
+<style lang="css" scoped>
+.side-bar {
+	max-width: 200px;
+	position: relative;
+	background-color: #4C5454;
+}
+header {
+	height: 15vh;
+	background-image: url('../assets/img/paper.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center
 }
 .wrapper {
+	position: relative;
+	height: 85vh;
+	border-left: 5px solid white
+}
+nav {
+	color: white;
+	font-size: 1.2rem;
+	font-weight: 400;
+}
+.nav-item {
+	transition: .3s
+}
+.nav-item:hover {
+	background-color: rgba(0,0,0,0.3);
+}
+.active {
+	font-weight: bold;
+	color: #4C5454 !important;
+	background-color: white;
+}
+.user	{
+	height: 50px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	color: white
+}
+.avatar {
+	background-color: white;
+}
+.avatar svg {
 	height: 100%;
-	width: 100%
+	fill: #4C5454;
 }
-.vs-content-sidebar, .vs-sidebar {
-	height: 100%;
-}
-.vs-sidebar {
-	transition: all .4s !important;
-}
-.vs-sidebar.vs-sidebar-reduce:hover:not(.vs-sidebar-reduceNotHoverExpand) {
-  max-width: 100% !important;
-}
-.vs-sidebar.vs-sidebar-reduce {
-	border-radius: 0 !important
-}
-.header-sidebar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-}
-.header-sidebar h4 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-.header-sidebar h4 > button {
-  margin-left: 10px;
-}
-.footer-sidebar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-.footer-sidebar > button {
-  border: 0px solid rgba(0,0,0,0) !important;
-  border-left: 1px solid rgba(0,0,0,0.07) !important;
-  border-radius: 0px !important;
+.name {
+	font-weight: 300;
+	font-size: 1.2rem
 }
 </style>
