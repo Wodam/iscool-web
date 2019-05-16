@@ -58,12 +58,14 @@ export default {
 <style lang="css" scoped>
 .side-bar {
 	max-width: 200px;
-	position: relative;
+	position: fixed;
 	background-color: #4C5454;
+	/* box-shadow: 5px 0 0 rgba(0,0,0,0.07) */
 }
 header {
 	height: 15vh;
-	background-image: url('../assets/img/paper.jpg');
+	background-color: #fff;
+	/* background-image: url('../assets/img/paper.jpg'); */
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center
