@@ -15,6 +15,8 @@
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@fortawesome/vue-fontawesome": "^0.1.6",
     "axios": "^0.18.0",
+    "bootstrap": "^4.3.1",
+    "bootstrap-vue": "^2.0.0-rc.20",
     "material-icons": "^0.3.1",
     "moment": "^2.22.2",
     "vue": "^2.5.17",
@@ -22,7 +24,6 @@
     "vue-router": "^3.0.2",
     "vue-search-select": "^2.8.3",
     "vuedraggable": "^2.17.0",
-    "vuesax": "^3.8.62",
     "vuetify": "^1.5.9"
   },
   "devDependencies": {

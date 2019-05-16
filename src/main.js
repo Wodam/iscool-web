@@ -10,6 +10,13 @@ import moment from "moment";
 // --- "Front-End" ---
 import App from './App.vue';
 
+// ~ BootstrapVue ~
+import BootstrapVue from 'bootstrap-vue'
+Vue.use(BootstrapVue)
+
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 // ~ Font Awesome ~
 import { library } from '@fortawesome/fontawesome-svg-core';	// Font Awesome core
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';	// Font Awesome component
@@ -24,25 +31,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';	// Font Awesome 
 
 // Font Awesome component
 Vue.component('font-awesome-icon', FontAwesomeIcon);
-
-// Vuesax
-import Vuesax from 'vuesax'; // Vuesax framework
-import 'vuesax/dist/vuesax.css' //Vuesax styles
-Vue.use(Vuesax, {
-	theme:{
-		colors:{
-			primary:'#0067F4',
-			secondary: '#5A6169',
-			success:'#17C671',
-			info: '#00B8D8',
-			warning:'#FFB400',
-			danger:'#C4183C',
-			light: '#E9ECEF',
-			dark:'#212529'
-		}
-	}
-});
-
 
 // TODO: consider the necessity of this
 import Vuetify from 'vuetify';
