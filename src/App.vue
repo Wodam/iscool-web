@@ -20,6 +20,7 @@ export default {
 };
 </script>
 
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
 /* --- FONTS --- */
 /* TODO: change to local files */
@@ -59,6 +60,7 @@ a:not([aria-disabled="true"]) {
 
 /* --- OTHERS --- */
 #app {
+	min-height: 100vh;
   background-color: whitesmoke;
 	font-family: 'Roboto', sans-serif;
 }
