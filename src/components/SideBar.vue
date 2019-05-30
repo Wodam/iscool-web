@@ -13,10 +13,7 @@
 				    <router-link class="nav-link" to="questions">Questões</router-link>
 				  </li>
 				  <li class="nav-item">
-				    <router-link class="nav-link disabled" tabindex="-1" aria-disabled="true" to="answers_sheets">Gabaritos</router-link>
-				  </li>
-				  <li class="nav-item">
-				    <router-link class="nav-link disabled" tabindex="-1" aria-disabled="true" to="notes">Notas</router-link>
+				    <router-link class="nav-link" tabindex="-1" to="answer_sheets">Correção</router-link>
 				  </li>
 				</ul>
 			</nav>
