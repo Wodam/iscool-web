@@ -160,7 +160,7 @@ export default {
 			console.log(this.questions[index]);
 		},
 		examLabel ({ id_test, name_test }) {
-      return `[AV-${id_test}] ${name_test}`
+      return `[A${id_test}] ${name_test}`
     },
 		async getLinks (id_question) {
 			this.questionSelected = id_question;
