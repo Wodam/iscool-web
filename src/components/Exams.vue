@@ -59,7 +59,7 @@
 						</div>
 					</div>
 					<div class="exam-body p-4">
-						<h3 class="exam-name">{{exam.name_test}}</h3>
+						<h3 class="exam-name">[A{{exam.id_test}}] {{exam.name_test}}</h3>
 						<hr class="exam-divider">
 						<div class="exam-text">
 							{{exam.description_test}}
