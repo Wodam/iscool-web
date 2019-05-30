@@ -4,7 +4,7 @@
 			<h1 class="page-title text-center">Correção</h1>
 		</header>
 		<div class="container">
-			<button type="button" class="save btn btn-lg w-100 mb-3" v-if="sheets.length > 0">Corrigir</button>
+			<button type="button" class="save btn btn-lg w-100 mb-3" v-show="ready">Corrigir</button>
 			<form enctype="multipart/form-data" novalidate>
         <div class="dropbox">
           <input type="file" multiple @change="filesChange"
@@ -14,6 +14,7 @@
             </p>
         </div>
       </form>
+			<h5 class="not-ready text-center text-white p-4 my-3" v-show="sheets.length > 0 && !ready">Defina a avaliação de cada folha resposta</h5>
 			<article v-if="sheets.length > 0">
 				<div class="row mt-4">
 					<div class="col-md-12 mb-4" :class="`col-lg-${sheets.length < 4 ? (sheets.length == 1 ? '12' : (sheets.length == 2 ? '6' : '4')) : '3'}`" v-for="(sheet, index) of sheets" :key="index">
@@ -25,6 +26,7 @@
 								</svg>
 							</div>
 							<img @click="viewSheet(index)" class="_rounded" :src="sheet.url" :alt="sheet.name">
+							<b-form-select class="exams" @change="verify" v-model="sheet.exam" :options="getOptions(index)"></b-form-select>
 						</div>
 					</div>
 				</div>
@@ -39,22 +41,27 @@
 
 <script>
 import axios from 'axios';
-const BASE_URL = 'http://localhost:3000'
+axios.defaults.baseURL = 'http://localhost:3000';
 
 export default {
 	name: "AnswerSheets",
   data() {
     return {
+			exams: [],
 			sheets: [],
+			ready: false,
 			selectedSheet: false
     }
   },
   methods: {
     filesChange(e) {
+			this.ready = false;
+
 			let files = [];
 
 			for (let file of e.target.files) {
 				file.url = URL.createObjectURL(file)
+				file.exam = null;
 				files.push(file);
 			}
 
@@ -65,26 +72,58 @@ export default {
 		remove (index) {
 			this.sheets.splice(index, 1);
 			this.selectedSheet = false;
+
+			this.verify();
 		},
 		viewSheet (index) {
 			this.selectedSheet = index;
 			this.$forceUpdate();
 			this.$bvModal.show('view-sheet');
+		},
+		async getExams () {
+      await axios.get('/api/test').then(async response => {
+				this.exams = response.data.sort((a,b) => (a.id_test < b.id_test) ? 1 : ((b.id_test < a.id_test) ? -1 : 0));;
+      }).catch((error) => {
+        console.log(error)
+      })
+
+			console.log("Exams: ", this.exams)
+		},
+		getOptions () {
+			let options = [{ value: null, text: 'Selecione uma avaliação', disabled: true}];
+			for (let exam of this.exams) {
+				options.push({
+					value: exam.id_test,
+					text: `[A${exam.id_test}] ${exam.name_test}`
+				})
+			}
+			return options;
+		},
+		verify () {
+			for (let sheet of this.sheets)
+				if (sheet.exam == null)
+					return;
+
+			this.ready = true;
 		}
-  }
+  },
+	mounted () {
+		this.getExams();
+	}
 }
 </script>
 
 <style lang="css" scoped>
 .dropbox {
-    outline: 2px dashed grey; /* the dash box */
-    outline-offset: -10px;
-    background: lightcyan;
-    color: dimgray;
+    outline: 2px dashed #4C5454; /* the dash box */
+    /* outline-offset: -10px; */
+    /* background: lightcyan; */
+    color: #4C5454;
     padding: 10px 10px;
     min-height: 200px; /* minimum height */
     position: relative;
     cursor: pointer;
+		transition: .3s
   }
 
   .input-file {
@@ -96,7 +135,7 @@ export default {
   }
 
   .dropbox:hover {
-    background: lightblue; /* when mouse over to the drop zone, change color */
+    background: white; /* when mouse over to the drop zone, change color */
   }
 
   .dropbox p {
@@ -155,6 +194,14 @@ export default {
 	object-fit: cover;
 }
 
+.sheet .exams {
+	position: absolute;
+	bottom: -3px;
+	left: 0;
+	border-radius: 0 0 10px 10px !important;
+	border: 0 !important
+}
+
 .save {
 	color: white;
 	font-weight: 700;
@@ -165,5 +212,9 @@ export default {
 
 .save:hover {
 	color: white !important
+}
+
+.not-ready {
+	background-color: #4C5454
 }
 </style>
