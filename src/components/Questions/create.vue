@@ -8,6 +8,7 @@
 				v-model="text"
 				placeholder="Digite algo..."
 				rows="3"
+				size="lg"
 				max-rows="6"
 				></b-form-textarea>
 			</div>
@@ -36,7 +37,7 @@
 							</p>
 						</div>
 						<div class="col-sm-12 col-md-2 pl-0">
-							<p class="action text-center mb-0 py-2 __rounded">
+							<p class="action text-center mb-0 py-2 __rounded" @click="clear">
 								Limpar
 							</p>
 						</div>
@@ -128,6 +129,17 @@ export default {
     },
 		cancel () {
 			this.$emit('cancel')
+		},
+		clear () {
+			this.text = '';
+			this.selected = '';
+			this.choices = [
+				{ text: '' },
+				{ text: '' },
+				{ text: '' },
+				{ text: '' },
+				{ text: '' }
+			]
 		}
 	},
 	mounted() {
