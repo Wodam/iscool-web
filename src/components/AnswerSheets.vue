@@ -207,15 +207,15 @@ export default {
 					if (exam.id_test == sheet.exam)
 						exams.push(exam);
 
-			this.corrections = [];
+			// this.corrections = [];
 
-			axios.defaults.baseURL = 'http://192.168.43.169:8080';
-			await axios.post('/Correcao/api', formData, { headers: { 'Content-Type': 'multipart/form-data' }}).then(response => {
-			// await axios.post('/api/answer_sheet', formData, { headers: { 'Content-Type': 'multipart/form-data' }}).then(response => {
+			// axios.defaults.baseURL = 'http://192.168.43.169:8080';
+			// await axios.post('/Correcao/api', formData, { headers: { 'Content-Type': 'multipart/form-data' }}).then(response => {
+			await axios.post('/api/answer_sheet', formData, { headers: { 'Content-Type': 'multipart/form-data' }}).then(response => {
 				console.log("Reponse: ", response)
 				this.response = true;
 
-				let correction = response.data;
+				// let correction = response.data;
 
 				// let correction = [
 				//   {
@@ -301,43 +301,43 @@ export default {
 				// ]
 
 				//Iterar sobre todas as alternativas
-				for (let exam of exams) {
-					for (var i = 0; i < exam.questions.length; i++) {
-						console.log(`Correção ${i}: `, correction[i])
-						console.log(`Questão ${i}: `, exam.questions[i])
-
-						// New correction
-						this.corrections.push({
-							ok: 0,
-							nok: 0,
-							tax: 0
-						})
-
-						// Se a alternativa[Index da letra (que o cara marcou)] existe && alternativa[Index da letra (que o cara marcou)] é a certa
-						if (exam.questions[i].choices[this.letters.indexOf(correction[i].choice)]) {
-							if (exam.questions[i].choices[this.letters.indexOf(correction[i].choice)].trueness_choice == "v") {
-								this.corrections[i].ok++;
-							} else {
-								this.corrections[i].nok++;
-							}
-						}
-
-						console.log(`Correção ${i}: `, this.corrections[i])
+				// for (let exam of exams) {
+				// 	for (var i = 0; i < exam.questions.length; i++) {
+				// 		console.log(`Correção ${i}: `, correction[i])
+				// 		console.log(`Questão ${i}: `, exam.questions[i])
+				//
+				// 		// New correction
+				// 		this.corrections.push({
+				// 			ok: 0,
+				// 			nok: 0,
+				// 			tax: 0
+				// 		})
+				//
+				// 		// Se a alternativa[Index da letra (que o cara marcou)] existe && alternativa[Index da letra (que o cara marcou)] é a certa
+				// 		if (exam.questions[i].choices[this.letters.indexOf(correction[i].choice)]) {
+				// 			if (exam.questions[i].choices[this.letters.indexOf(correction[i].choice)].trueness_choice == "v") {
+				// 				this.corrections[i].ok++;
+				// 			} else {
+				// 				this.corrections[i].nok++;
+				// 			}
+				// 		}
+				//
+				// 		console.log(`Correção ${i}: `, this.corrections[i])
 
 						// console.log(exam.questions[i].choices[this.letters.indexOf(correction[i].choice)])
-					}
+					// }
 					// for (let question of exam.questions) {
 					// 	for (let choice of question.choices) {
 					// 		this.letters.indexOf()
 					// 		console.log(choice.trueness_choice)
 					// 	}
 					// }
-				}
+				// }
 			}).catch((error) => {
 				console.log(error)
 			})
 
-			axios.defaults.baseURL = 'http://localhost:3000';
+			// axios.defaults.baseURL = 'http://localhost:3000';
 		}
   },
 	mounted () {
